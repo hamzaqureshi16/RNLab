@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TextInput } from "react-native-paper";
 import { View, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -9,29 +9,32 @@ import Checkbox from "./Check";
 import BigTextArea from "./BigTextArea";
 import { TouchableOpacity } from "react-native";
 import { useWindowDimensions } from "react-native";
-import * as ScreenOrientation from 'expo-screen-orientation';
-
+import * as ScreenOrientation from "expo-screen-orientation";
+import { useDispatch, useSelector } from "react-redux";
+import { increment } from "../Redux/Slices/CounterSlice";
+import { addAge, subAge } from "../Redux/Slices/ageSlice";
 
 export default function Layout({ navigation, route }) {
   const { colors } = useTheme();
   const { width, height } = useWindowDimensions();
-  const [count, setCount] = useState(0);
+  const count = useSelector((state) => state.counter.value);
+  const age = useSelector((state) => state.age.value);
   const [orientation, setOrientation] = useState("portrait");
+  const dispatch = useDispatch();
 
+  const handleIncrease = () => {
+    dispatch(increment());
+  };
 
+  useEffect(() => {
+    if (height > width) {
+      setOrientation("portrait");
+    } else {
+      setOrientation("landscape");
+    }
+  }, [height, width]);
 
-
-  
-useEffect(()=>{
-  if(height>width){
-    setOrientation("portrait")
-  }
-  else{
-    setOrientation("landscape")
-  }
-},[height,width])
-
-  useEffect(()=>console.log(count),[count])
+  useEffect(() => console.log(count), [count]);
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -43,7 +46,7 @@ useEffect(()=>{
             margin: 20,
             height: 50,
           }}
-          onPress={() => setCount(count + 1)}
+          onPress={() => handleIncrease()}
           onLongPress={() => setCount(0)}
         >
           <Text
@@ -64,14 +67,37 @@ useEffect(()=>{
   }, [count]);
 
   return (
-    <ScrollView contentContainerStyle={[Style.main,{
-      flexDirection:orientation==="portrait"?"column":"row",
-    }]}>
+    <ScrollView
+      contentContainerStyle={[
+        Style.main,
+        {
+          flexDirection: orientation === "portrait" ? "column" : "row",
+        },
+      ]}
+    >
       {route?.params?.name ? (
         <Text style={Style.main}> Hi, {route?.params?.name}</Text>
       ) : (
         <></>
       )}
+
+      <Text style={Style.main}>Age: {age}</Text>
+      <TouchableOpacity
+        style={Style.button}
+        onPress={() => {
+          dispatch(addAge());
+        }}
+      >
+        <Text style={Style.main}>Add Age</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={Style.button}
+        onPress={() => {
+          dispatch(subAge());
+        }}
+      >
+        <Text style={Style.main}>Sub Age</Text>
+      </TouchableOpacity>
 
       <TextInput
         style={{

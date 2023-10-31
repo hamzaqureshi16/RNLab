@@ -21,6 +21,9 @@ import BottomNavigation from "./Components/Navigation/BottomNavigation";
 import { Style } from "./Components/Styles/Style";
 import { createContext, useContext } from "react";
 import Context from "./Contexts/UserInfo";
+import { Provider } from "react-redux/es/exports";
+import { store } from "./Redux/store";
+import * as SQLite from "expo-sqlite";
 
 const Hme = () => {
   const homeContext = useContext(Context);
@@ -85,6 +88,61 @@ export default function App() {
   const [score, setScore] = useState("");
   const [grd, setGrd] = useState("");
 
+  const db = SQLite.openDatabase(
+    {
+      name: "MainDB",
+      location: "default",
+    },
+    () => {
+      console.log("DB connected");
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+
+  const createTable = () => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "create table if not exists tbl_users (id integer primary key autoincrement, name text, age text)"
+      );
+    });
+  };
+
+  const insertData = () => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "insert into tbl_users (name, age) values (?, ?)",
+        ["Hamza", 23],
+        (tx, results) => {
+          console.log("Results", results.rowsAffected);
+          if (results.rowsAffected > 0) {
+            alert("Success");
+          } else {
+            alert("Failed");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    });
+  };
+
+  const logData = () => {
+    db.transaction((tx) => {
+      console.log(tx);
+      tx.executeSql("select * from tbl_users", [], (tx, results) => {
+        console.log("Results", results);
+        if (results.rows.length > 0) {
+          alert("Success");
+        } else {
+          alert("Failed");
+        }
+      });
+    });
+  };
+
   const getOrientation = () => {
     const { width, height } = Dimensions.get("window");
     return width > height ? "landscape" : "portrait";
@@ -105,7 +163,8 @@ export default function App() {
   };
 
   return (
-    // <Context.Provider value={{ ...personInfo, ...ContextSetter }}>
+    <Provider store={store}>
+      {/* // <Context.Provider value={{ ...personInfo, ...ContextSetter }}>
     //   <NavigationContainer>
     //     <View
     //       style={{
@@ -120,9 +179,38 @@ export default function App() {
     //       </Stack.Navigator>
     //     </View>
     //   </NavigationContainer>
-    // </Context.Provider>
-    <NavigationContainer>
-      <ScreenNavigation />
-    </NavigationContainer>
+    // </Context.Provider> */}
+
+      <NavigationContainer>
+        <View style={Style.main}>
+          <Text style={Style.heading}>hello</Text>
+          <TouchableOpacity
+            onPress={() => {
+              createTable();
+            }}
+            style={Style.button}
+          >
+            <Text style={Style.btnText}>Create</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            onPress={() => {
+              insertData();
+            }}
+            style={Style.button}
+          >
+            <Text style={Style.btnText}>Insert</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              logData();
+            }}
+            style={Style.button}
+          >
+            <Text style={Style.btnText}>Log</Text>
+          </TouchableOpacity>
+        </View>
+      </NavigationContainer>
+    </Provider>
   );
 }

@@ -6,6 +6,10 @@ export const Style = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+
   },
   heading:{
     fontSize: 30,
