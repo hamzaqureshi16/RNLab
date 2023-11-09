@@ -1,3 +1,4 @@
+
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -24,6 +25,8 @@ import Context from "./Contexts/UserInfo";
 import { Provider } from "react-redux/es/exports";
 import { store } from "./Redux/store";
 import * as SQLite from "expo-sqlite";
+
+import Mids from "./Screens/Mids/Mids";
 
 const Hme = () => {
   const homeContext = useContext(Context);
@@ -163,54 +166,8 @@ export default function App() {
   };
 
   return (
-    <Provider store={store}>
-      {/* // <Context.Provider value={{ ...personInfo, ...ContextSetter }}>
-    //   <NavigationContainer>
-    //     <View
-    //       style={{
-    //         flex: 1,
-    //         justifyContent: "center",
-    //         backgroundColor: useTheme().colors.background,
-    //       }}
-    //     >
-    //       <Stack.Navigator>
-    //         <Stack.Screen name="Home" component={Hme} />
-    //         <Stack.Screen name="Profile" component={Prof} />
-    //       </Stack.Navigator>
-    //     </View>
-    //   </NavigationContainer>
-    // </Context.Provider> */}
-
-      <NavigationContainer>
-        <View style={Style.main}>
-          <Text style={Style.heading}>hello</Text>
-          <TouchableOpacity
-            onPress={() => {
-              createTable();
-            }}
-            style={Style.button}
-          >
-            <Text style={Style.btnText}>Create</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            onPress={() => {
-              insertData();
-            }}
-            style={Style.button}
-          >
-            <Text style={Style.btnText}>Insert</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              logData();
-            }}
-            style={Style.button}
-          >
-            <Text style={Style.btnText}>Log</Text>
-          </TouchableOpacity>
-        </View>
-      </NavigationContainer>
-    </Provider>
+    <NavigationContainer>
+      <Mids />
+    </NavigationContainer>
   );
 }
