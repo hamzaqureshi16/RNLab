@@ -7,6 +7,8 @@ import SignUp from "../Signup";
 import Login from "../Login";
 import { Text } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Sqlite from "../../Screens/Sqlite";
 
 export default function ScreenNavigation() {
   const Stack = createStackNavigator();
@@ -30,6 +32,12 @@ export default function ScreenNavigation() {
     </>
   );
 
+
+  const logout = async () => {
+    await AsyncStorage.removeItem("token");
+    navigation.navigate("Login");
+  }
+
   const HeaderButton = () => (
     <TouchableOpacity
       style={{
@@ -39,8 +47,7 @@ export default function ScreenNavigation() {
         margin: 20,
         height: 50,
       }}
-      onPress={() => setCount(count + 1)}
-      onLongPress={() => setCount(0)}
+      onPress={() => logout()}
     >
       <Text
         style={{
@@ -52,7 +59,7 @@ export default function ScreenNavigation() {
           height: 30,
         }}
       >
-        {count}
+        Logout
       </Text>
     </TouchableOpacity>
   );
@@ -61,12 +68,14 @@ export default function ScreenNavigation() {
       initialRouteName="Home"
       screenOptions={{
         headerStyle: {
-          backgroundColor: useTheme().colors.primary,
+          backgroundColor: 'orange'
         },
         headerTintColor: useTheme().colors.text,
         headerTitleStyle: {
           fontWeight: "bold",
         },
+        headerLeft: null,
+        headerRight: (props) => <HeaderButton />,
       }}
     >
       <Stack.Screen
@@ -75,18 +84,15 @@ export default function ScreenNavigation() {
         options={{
           navigation: navigation,
           headerTitle: "Home",
-          // headerRight: (props) => <HeaderButton />,
         }}
       />
+
       <Stack.Screen
-        name="Sign Up"
-        component={SignUp}
-        options={{ title: "Sign Up" }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ title: "Login" }}
+        name="Sqlite"
+        component={Sqlite}
+        options={{
+          headerTitle: "Sqlite example",
+        }}
       />
     </Stack.Navigator>
   );

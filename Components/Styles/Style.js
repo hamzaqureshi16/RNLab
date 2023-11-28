@@ -128,7 +128,37 @@ export const Style = StyleSheet.create({
     borderRadius: 10,
     fontSize: 20,
     fontWeight: "bold",
-  }
+  },
+  player:{
+    borderWidth: 1,
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  playerName:{
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  playerScore:{
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  footer:{
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "gray",
+  },
+  jbuttonText:{
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
 
   
 });

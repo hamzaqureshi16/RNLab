@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList,View ,Text} from "react-native";
 import { Style } from "./Styles/Style";
+import {str} from '../Data/str';
 export default function FLt() {
   const list = [
     { name: "Ali", age: 33, city: "Karachi" },

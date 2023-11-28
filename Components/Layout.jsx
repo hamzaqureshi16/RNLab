@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, TextInput } from "react-native-paper";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { Style } from "./Styles/Style";
 import Radio from "./Radio";
 import Dropdown from "./Dropdown";
 import Checkbox from "./Check";
@@ -22,6 +21,41 @@ export default function Layout({ navigation, route }) {
   const [orientation, setOrientation] = useState("portrait");
   const dispatch = useDispatch();
 
+  const Style = StyleSheet.create({
+    main: {
+      backgroundColor: colors.background,
+      color: colors.text,
+      fontSize: 15,
+      fontWeight: "bold",
+      textAlign: "left",
+      marginBottom: 40,
+    },
+    text:{
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+      textAlign: "center",
+      marginBottom: 40,
+      height: 30,
+    },
+    button: {
+      backgroundColor: colors.primary,
+      borderRadius: 10,
+      padding: 10,
+      margin: 20,
+      height: 50,
+    },
+    bgtxt: {
+      backgroundColor: colors.background,
+      color: colors.text,
+      fontSize: 15,
+      fontWeight: "bold",
+      textAlign: "left",
+      marginBottom: 40,
+      width: 300,
+    },
+  });
+
   const handleIncrease = () => {
     dispatch(increment());
   };
@@ -35,36 +69,36 @@ export default function Layout({ navigation, route }) {
   }, [height, width]);
 
   useEffect(() => console.log(count), [count]);
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.backdrop,
-            borderRadius: 10,
-            padding: 10,
-            margin: 20,
-            height: 50,
-          }}
-          onPress={() => handleIncrease()}
-          onLongPress={() => setCount(0)}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "bold",
-              color: colors.text,
-              textAlign: "center",
-              marginBottom: 40,
-              height: 30,
-            }}
-          >
-            {count}
-          </Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [count]);
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => (
+  //       <TouchableOpacity
+  //         style={{
+  //           backgroundColor: colors.backdrop,
+  //           borderRadius: 10,
+  //           padding: 10,
+  //           margin: 20,
+  //           height: 50,
+  //         }}
+  //         onPress={() => handleIncrease()}
+  //         onLongPress={() => setCount(0)}
+  //       >
+  //         <Text
+  //           style={{
+  //             fontSize: 20,
+  //             fontWeight: "bold",
+  //             color: colors.text,
+  //             textAlign: "center",
+  //             marginBottom: 40,
+  //             height: 30,
+  //           }}
+  //         >
+  //           {count}
+  //         </Text>
+  //       </TouchableOpacity>
+  //     ),
+  //   });
+  // }, [count]);
 
   return (
     <ScrollView
@@ -88,7 +122,7 @@ export default function Layout({ navigation, route }) {
           dispatch(addAge());
         }}
       >
-        <Text style={Style.main}>Add Age</Text>
+        <Text style={Style.text}>Add Age</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={Style.button}
@@ -96,7 +130,16 @@ export default function Layout({ navigation, route }) {
           dispatch(subAge());
         }}
       >
-        <Text style={Style.main}>Sub Age</Text>
+        <Text style={Style.text}>Sub Age</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={Style.button}
+        onPress={() => {
+          navigation.navigate("Sqlite");
+        }}
+      >
+        <Text style={Style.text}>Sqlite Example</Text>
       </TouchableOpacity>
 
       <TextInput
@@ -132,18 +175,8 @@ export default function Layout({ navigation, route }) {
       <Radio />
       <Dropdown />
       <Checkbox />
-      <BigTextArea placeholder={"Skills"} />
-      <BigTextArea placeholder={"Address"} />
-
-      <TouchableOpacity
-        style={Style.button}
-        onPress={() => {
-          navigation.setOptions({ title: "Logged in!" });
-          // navigation.push('Login')
-        }}
-      >
-        <Text style={Style.main}>Login</Text>
-      </TouchableOpacity>
+      <BigTextArea placeholder={"Skills"} style={Style.bgtxt} />
+      <BigTextArea placeholder={"Address"} style={Style.bgtxt} />
     </ScrollView>
   );
 }
