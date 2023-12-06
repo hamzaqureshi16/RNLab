@@ -16,6 +16,7 @@ export default function Login({navigation}) {
   });
 
   const login = async () => {
+    console.log('hey')
     try {
       const users = await AsyncStorage.getItem("users");
       const userData = JSON.parse(users);

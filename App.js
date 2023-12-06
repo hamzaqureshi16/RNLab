@@ -28,6 +28,7 @@ import FlatList from "./Components/FlatList";
 import Mids from "./Screens/Mids/Mids";
 import LabMid from "./Screens/Mids/LabMid";
 import { configureStore } from "@reduxjs/toolkit";
+import Firebase from "./Screens/Firebase";
 
 const Hme = () => {
   const [x, setX] = useState(0);
@@ -45,6 +46,16 @@ const Hme = () => {
       <TouchableOpacity style={Style.button} onPress={change}>
         <Text style={Style.btnText}>Click to change</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={Style.button}
+        onPress={() => {
+          alert(x + y);
+        }}
+      >
+        <Text style={Style.btnText}>CLick to send to Firebase</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -212,7 +223,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Firebase/>
+        {/* <Stack.Navigator>
           <Stack.Screen
             name="bottom"
             component={BottomNavigation}
@@ -227,7 +239,7 @@ export default function App() {
             headerShown: false
           }}
           />
-        </Stack.Navigator>
+        </Stack.Navigator> */}
       </NavigationContainer>
     </Provider>
   );
